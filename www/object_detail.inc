@@ -45,6 +45,7 @@ function getRequests($id, $test_path, $run, $is_cached,
     $has_locations = false;
     if ($use_location_check) {
         $has_locations = AddLocationData($requests);
+        AddOrgData($requests);
     }
 
     $has_secure_requests = false;
@@ -276,6 +277,37 @@ function AddLocationData(&$requests) {
     }
     return $has_locations;
 }
+
+/**
+* Map IP addresses to Organization
+*/
+function AddOrgData(&$requests) {
+    $has_org = false;
+    $geo_ip = null;
+    try {
+      if (is_file('./Net/GeoLiteCity.dat')) {
+        include('./Net/GeoIP.php');
+        $geo_ip = Net_GeoIP::getInstance(
+            './Net/GeoIPASNum.dat', Net_GeoIP::MEMORY_CACHE);
+      }
+    } catch(Exception $e) { }
+
+    if (isset($geo_ip)) {
+        foreach($requests as &$request) {
+            if ($request['ip_addr']) {
+                try {
+                    $org = $geo_ip->lookupOrg($request['ip_addr']);
+                    if ($org) {
+                        $has_org = true;
+                        $request['org'] = $org;
+                    }
+                } catch(Exception $e) {}
+            }
+        }
+    }
+    return $has_org;
+}
+
 
 /**
 * Convert old format for DNS/connection data.
