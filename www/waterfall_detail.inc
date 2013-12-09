@@ -19,6 +19,7 @@
 		<th class="reqIP">IP</th>
 		<?php if( $haveLocations ) { ?>
 		<th class="reqLocation">Location*</th>
+		<th class="reqOrg">Org</th>
 		<?php } ?>
 	</tr>
     </thead>
@@ -153,6 +154,7 @@ foreach($requests as $reqNum => $request)
 
 		if( $haveLocations)
 			echo '<td class="reqLocation ' . $highlight . '">' . $request['location'] . "</td>\n";
+			echo '<td class="reqOrg ' . $highlight . '">' . $request['org'] . "</td>\n";
 
 		echo '</tr>';
 	}
