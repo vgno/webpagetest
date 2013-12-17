@@ -1,6 +1,6 @@
 <?php
 set_time_limit(0);
-error_reporting(0);
+//error_reporting(0);
 $locations = array('US East (Virginia)', 'US West (California)', 'South America (Brazil)', 'Europe (Ireland)', 'Asia (Singapore)', 'Asia (Tokyo)' );
 $counts = array();
 

@@ -9,7 +9,7 @@ if ($supportsAuth && ((array_key_exists('google_email', $_COOKIE) && strpos($_CO
     $admin = true;
 
 // shared initializiation/loading code
-error_reporting(0);
+//error_reporting(0);
 $days = (int)$_GET["days"];
 $filter = $_GET["filter"];
 $from = $_GET["from"];

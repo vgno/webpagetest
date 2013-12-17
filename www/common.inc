@@ -15,7 +15,7 @@ foreach($_REQUEST as $key => $val) {
 // shared initializiation/loading code
 set_time_limit(300);
 if (!array_key_exists('debug', $_REQUEST) && (!isset($debug) || !$debug)) {
-    error_reporting(0);
+    //error_reporting(0);
 }
 umask(0);
 date_default_timezone_set('UTC');
