@@ -2390,4 +2390,29 @@ function numRunsFromTestInfo($testInfo) {
   return $runs;
 }
 
+/**
+* Parse headers into key/value array.
+*
+* @param array $request Request object.
+*
+* @return Hash of request and response headers, FALSE if no headers found.
+**/
+function parseHeaders($request) {
+    $headerList = array();
+
+    if (is_array($request) && array_key_exists('headers', $request)) {
+        foreach(array_keys($request['headers']) as $cur) {
+            foreach($request['headers'][$cur] as $hdrIndex => $hdr) {
+                if (preg_match('/^([A-Za-z0-9\-]+)\:\s+(.*)/', $hdr, $matches) == 1) {
+                    $headerList[$cur][$matches[1]] = $matches[2];
+                }
+            }
+        }
+
+        return $headerList;
+    }
+
+    return FALSE;
+}
+
 ?>
