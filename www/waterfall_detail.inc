@@ -1,3 +1,8 @@
+<?php
+  $includeHeaders = split(",", $_GET['headers']);
+  if (empty($_GET['headers'])) $includeHeaders = array('X-Cache');
+?>
+
 <div class="center">
 <table id="tableDetails" class="details center">
 	<caption>Request Details</caption>
@@ -19,6 +24,11 @@
 		<th class="reqIP">IP</th>
 		<?php if( $haveLocations ) { ?>
 		<th class="reqLocation">Location*</th>
+    <?php
+      foreach($includeHeaders as $hdr) {
+        printf("<th class=\"reqResult\">%s</th>", $hdr);
+      }
+    ?>
 		<?php } ?>
 	</tr>
     </thead>
@@ -26,14 +36,16 @@
 
 <?php
 
+
 // loop through all of the requests and spit out a data table
 foreach($requests as $reqNum => $request)
 {
-	if($request)
-	{
-		echo '<tr>';
+	if($request) {
+		
+    echo '<tr>';
 
-        $requestNum = $reqNum + 1;
+	  $headers = parseHeaders($request);
+    $requestNum = $reqNum + 1;
 
 		$highlight = '';
 		$result = (int)$request['responseCode'];
@@ -153,8 +165,12 @@ foreach($requests as $reqNum => $request)
 
 		if( $haveLocations)
 			echo '<td class="reqLocation ' . $highlight . '">' . $request['location'] . "</td>\n";
-
-		echo '</tr>';
+		
+	  foreach($includeHeaders as $hdr) {
+      if (!isset($headers[$hdr]))
+        printf("<td class=\"reqResult %s\">%s</td>\n", $highlight, (isset($headers['response'][$hdr]) ? $headers['response'][$hdr] : ""));
+    }
+      echo '</tr>';
 	}
 }
 ?>
